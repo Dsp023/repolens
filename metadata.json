@@ -1,0 +1,5 @@
+{
+  "name": "RepoLens",
+  "description": "A beginner-friendly tool that uses AI to explain GitHub repositories in simple terms.",
+  "requestFramePermissions": []
+}

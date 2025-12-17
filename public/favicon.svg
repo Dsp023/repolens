@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Background with GitHub-like dark theme color -->
+  <rect width="128" height="128" rx="32" fill="#0D1117" />
+  
+  <!-- Magnifying Glass Handle -->
+  <path d="M82 82 L104 104" stroke="#58A6FF" stroke-width="12" stroke-linecap="round" />
+  
+  <!-- Magnifying Glass Lens Circle -->
+  <circle cx="58" cy="58" r="32" stroke="#58A6FF" stroke-width="10" fill="none" />
+  
+  <!-- Code Brackets inside the Lens -->
+  <path d="M48 50 L42 58 L48 66 M68 50 L74 58 L68 66" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+</svg>
