@@ -16,15 +16,15 @@ const analysisSchema: Schema = {
     },
     structure: {
       type: Type.STRING,
-      description: "A simple explanation of the folder structure. Use a plain text list with dashes (e.g. '- src/: main code'). Do NOT use HTML tags like <ul> or <li>.",
+      description: "A simple explanation of the folder structure.  Use a plain text list with dashes (e.g. '- src/: main code'). Do NOT use HTML tags like <ul> or <li>.",
     },
     runInstructions: {
       type: Type.STRING,
-      description: "Simplified steps to run the project locally. Use Markdown for code blocks.",
+      description: " Simplified steps to run the project locally. Use Markdown for code blocks.",
     },
     targetAudience: {
       type: Type.STRING,
-      description: "Who is this project for? (e.g., 'React beginners', 'Data Scientists').",
+      description: "Who is this project for? (e.g., ' React beginners', 'Data Scientists').",
     },
   },
   required: ["summary", "techStack", "structure", "runInstructions", "targetAudience"],
