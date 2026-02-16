@@ -2,13 +2,6 @@ import { GitHubRepoData } from '../types';
 
 const GITHUB_API_BASE = 'https://api.github.com/repos';
 
-/**
- * Extracts owner and repo name from a GitHub URL.
- * Supports:
- * - https://github.com/owner/repo
- * - https://github.com/owner/repo.git
- * - owner/repo
- */
 export const parseGitHubUrl = (input: string): { owner: string; repo: string } | null => {
   try {
     let cleanInput = input.trim();
@@ -42,7 +35,7 @@ export const parseGitHubUrl = (input: string): { owner: string; repo: string } |
 /**
  * Fetches repository metadata and README from GitHub.
  */
-export const fetchRepoData = async (owner: string, repo: string): Promise<GitHubRepoData> => {
+export const fetchRepoData = async (owner: string, repo: string):  Promise<GitHubRepoData> => {
   const metaUrl = `${GITHUB_API_BASE}/${owner}/${repo}`;
   const readmeUrl = `${GITHUB_API_BASE}/${owner}/${repo}/readme`;
 
