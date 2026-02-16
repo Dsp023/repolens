@@ -9,7 +9,7 @@ export interface GitHubRepoData {
   url: string;
 }
 
-// Define the structured response we expect from the AI
+
 export interface RepoAnalysis {
   summary: string; // What does this project do?
   techStack: string[]; // Tech stack used
