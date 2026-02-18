@@ -16,6 +16,8 @@ export interface RepoAnalysis {
   structure: string; // Folder structure explained
   runInstructions: string; // How to run this project locally
   targetAudience: string; // Who should use or study this?
+  pros: string[]; // Strengths of the project
+  cons: string[]; // Weaknesses or areas for improvement
 }
 
 // Application state types

@@ -26,8 +26,18 @@ const analysisSchema: Schema = {
       type: Type.STRING,
       description: "Who is this project for? (e.g., ' React beginners', 'Data Scientists').",
     },
+    pros: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "A list of strengths or positive aspects of the project/codebase.",
+    },
+    cons: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "A list of weaknesses, missing features, or areas for improvement.",
+    },
   },
-  required: ["summary", "techStack", "structure", "runInstructions", "targetAudience"],
+  required: ["summary", "techStack", "structure", "runInstructions", "targetAudience", "pros", "cons"],
 };
 
 export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysis> => {
@@ -58,6 +68,8 @@ export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysi
     3. Explanation of the folder structure (Strictly use a plain text list with dashes. NO HTML TAGS allowed).
     4. How to run it locally (simplify the steps).
     5. Who should use or study this?
+    6. Three strengths (pros) of the project.
+    7. Three weaknesses or areas for improvement (cons).
 
     If information is completely missing, explicitly say "Not specified in the repository".
     Keep the tone calm, encouraging, and professional.

@@ -63,7 +63,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-canvas-default flex flex-col items-center">
+    <div className="w-full min-h-screen bg-canvas-default flex flex-col items-center selection:bg-accent-fg selection:text-white">
 
       {/* Header */}
       <header className="w-full bg-canvas-subtle border-b border-border-default py-4 px-4 sm:px-6 lg:px-8 mb-8 md:mb-12">

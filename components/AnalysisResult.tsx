@@ -65,6 +65,32 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, repo }) => {
             </div>
           </div>
 
+          {/* Card 6: Pros & Cons */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">
+              <div className="bg-canvas-subtle px-4 py-3 border-b border-border-default flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-success-fg"></div>
+                <h3 className="text-sm font-semibold text-fg-default uppercase tracking-wider">Strengths</h3>
+              </div>
+              <ul className="p-6 space-y-3 list-disc list-inside text-sm text-fg-default">
+                {data.pros.map((pro, i) => (
+                  <li key={i}>{pro}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">
+              <div className="bg-canvas-subtle px-4 py-3 border-b border-border-default flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-danger-fg"></div>
+                <h3 className="text-sm font-semibold text-fg-default uppercase tracking-wider">Limitations</h3>
+              </div>
+              <ul className="p-6 space-y-3 list-disc list-inside text-sm text-fg-default">
+                {data.cons.map((con, i) => (
+                  <li key={i}>{con}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
           {/* Card 4: Folder Structure */}
           <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">
             <div className="bg-canvas-subtle px-4 py-3 border-b border-border-default flex items-center gap-2">
