@@ -98,7 +98,7 @@ const App: React.FC = () => {
         )}
 
         {/* Main Input */}
-        {appState === 'IDLE ' || appState === 'ERROR' || appState === 'SUCCESS' ? (
+        {appState === 'IDLE' || appState === 'ERROR' || appState === 'SUCCESS' ? (
           <RepoInput
             onSubmit={handleRepoSubmit}
             isLoading={appState === 'FETCHING_GITHUB' || appState === 'ANALYZING'}
@@ -128,10 +128,10 @@ const App: React.FC = () => {
       </main>
 
       {/* Footer / Credits */}
-      <footer className="mt-auto py-12 text-center  text-fg-muted text-xs border-t border-border-muted w-full">
+      <footer className="mt-auto py-12 text-center text-fg-muted text-xs border-t border-border-muted w-full">
         <div className="flex items-center justify-center gap-2">
           <span>Created by Devi Sri Prasad</span>
-          <a href="#" target="_blank" rel="noopener noreferrer" className="text-fg-muted hover:text-fg-default transition-colors">
+          <a href="https://github.com/Dsp023" target="_blank" rel="noopener noreferrer" className="text-fg-muted hover:text-fg-default transition-colors">
             <GitHubIcon className="w-4 h-4" />
           </a>
         </div>

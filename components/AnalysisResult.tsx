@@ -53,10 +53,10 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, repo }) => {
         {/* Main Content Column */}
         <div className="md:col-span-2 space-y-6">
           {/* Card 1: Summary */}
-          <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">
-            <div className="bg-canvas-subtle px-4 py-3 border-b border-border-default flex items-center justify-between">
+          <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden hover:border-accent-fg transition-colors group">
+            <div className="bg-canvas-subtle px-4 py-3 border-b border-border-default flex items-center justify-between group-hover:bg-accent-muted/10 transition-colors">
               <h3 className="text-sm font-semibold text-fg-default">About the project</h3>
-              <BookIcon className="w-4 h-4 text-fg-muted" />
+              <BookIcon className="w-4 h-4 text-fg-muted group-hover:text-accent-fg" />
             </div>
             <div className="p-6">
               <p className="text-fg-default leading-relaxed text-base">
