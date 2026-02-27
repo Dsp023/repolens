@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type, Schema } from "@google/genai";
-import { GitHubRepoData, RepoAnalysis } from "../types";
+import { GitHubRepoData, RepoAnalysis, ChatMessage } from "../types";
 
 // Schema definition for the AI response
 const analysisSchema: Schema = {
@@ -98,3 +98,57 @@ export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysi
     throw new Error(`AI Analysis Failed: ${errorMessage}`);
   }
 };
+
+export const chatWithRepo = async (repoData: GitHubRepoData, chatHistory: ChatMessage[], newMessage: string): Promise<string> => {
+  if (!process.env.API_KEY) {
+    throw new Error("Missing Gemini API Key.");
+  }
+
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+  const systemInstruction = `
+    You are an AI assistant helping a user understand a GitHub repository.
+    Answer their questions concisely and accurately based on the repository details.
+    
+    Repository Name: ${repoData.owner}/${repoData.repo}
+    Description: ${repoData.description || "No description provided."}
+    Primary Language: ${repoData.language || "Unknown"}
+    
+    README Content (truncated if too long):
+    ---
+    ${repoData.readme.slice(0, 15000)}
+    ---
+  `;
+
+  // Format history for Gemini
+  const contents = chatHistory.map(msg => ({
+    role: msg.role === 'user' ? 'user' : 'model',
+    parts: [{ text: msg.content }]
+  }));
+
+  // Add the new message
+  contents.push({
+    role: 'user',
+    parts: [{ text: newMessage }]
+  });
+
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-flash-latest",
+      contents: contents as any,
+      config: {
+        systemInstruction,
+      },
+    });
+
+    if (!response.text) {
+      throw new Error("Empty response from AI.");
+    }
+
+    return response.text;
+  } catch (error: any) {
+    console.error("Gemini Chat Error:", error);
+    throw new Error("Failed to get response from AI.");
+  }
+};
+

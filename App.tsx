@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import RepoInput from './components/RepoInput';
 import AnalysisResult from './components/AnalysisResult';
 import LoadingOverlay from './components/LoadingOverlay';
+import RepoChat from './components/RepoChat';
 import { AlertIcon, BookIcon, SunIcon, MoonIcon, GitHubIcon } from './components/Icons';
 import { AppState, AppError, GitHubRepoData, RepoAnalysis } from './types';
 import { parseGitHubUrl, fetchRepoData } from './services/githubService';
@@ -123,7 +124,10 @@ const App: React.FC = () => {
 
         {/* Results */}
         {appState === 'SUCCESS' && analysis && repoData && (
-          <AnalysisResult data={analysis} repo={repoData} />
+          <>
+            <AnalysisResult data={analysis} repo={repoData} />
+            <RepoChat repoData={repoData} />
+          </>
         )}
       </main>
 

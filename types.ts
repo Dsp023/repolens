@@ -27,3 +27,8 @@ export interface AppError {
   title: string;
   message: string;
 }
+
+export interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
