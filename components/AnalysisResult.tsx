@@ -8,7 +8,8 @@ import {
   TerminalIcon,
   UsersIcon,
   GitHubIcon,
-  StarIcon
+  StarIcon,
+  DownloadIcon
 } from './Icons';
 
 interface AnalysisResultProps {
@@ -17,11 +18,58 @@ interface AnalysisResultProps {
 }
 
 const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, repo }) => {
+  const exportToMarkdown = () => {
+    const mdContent = `# Analysis: ${repo.owner}/${repo.repo}
+
+**Vibe:** ${data.projectVibe || 'N/A'} | **Health Score:** ${data.healthScore || 'N/A'} | **Setup Time:** ${data.setupTime || 'N/A'}
+
+## About the Project
+${data.summary}
+
+## Tech Stack
+${data.techStack.map(t => `- ${t}`).join('\n')}
+
+## Strengths
+${data.pros.map(p => `- ${p}`).join('\n')}
+
+## Limitations
+${data.cons.map(c => `- ${c}`).join('\n')}
+
+## Refactoring Ideas
+${data.refactorSuggestions?.map(r => `- ${r}`).join('\n') || 'None'}
+
+## Getting Started
+\`\`\`
+${data.runInstructions}
+\`\`\`
+
+## One-Click Setup Script
+\`\`\`bash
+${data.setupScript || '# No script provided'}
+\`\`\`
+
+## File Structure
+\`\`\`
+${data.structure}
+\`\`\`
+`;
+    const blob = new Blob([mdContent], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${repo.repo}-analysis.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="w-full max-w-5xl mx-auto pb-12 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
       {/* Header Info */}
-      <div className="mb-6 px-1">
-        <h2 className="text-2xl font-semibold text-fg-default flex items-center gap-2 mb-2">
+      <div className="mb-6 px-1 flex flex-col md:flex-row md:items-start justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-semibold text-fg-default flex items-center gap-2 mb-2">
           <GitHubIcon className="w-6 h-6 text-fg-muted" />
           <a href={repo.url} target="_blank" rel="noopener noreferrer" className="hover:underline text-accent-fg">
             {repo.owner}
@@ -60,6 +108,13 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, repo }) => {
             ✨ {data.projectVibe || 'Vibe: Unknown'}
           </span>
         </div>
+        <button
+          onClick={exportToMarkdown}
+          className="flex items-center gap-2 px-3 py-1.5 bg-canvas-subtle border border-border-default rounded-md text-sm font-medium text-fg-default hover:bg-canvas-default transition-colors"
+        >
+          <DownloadIcon className="w-4 h-4" />
+          Export MD
+        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
