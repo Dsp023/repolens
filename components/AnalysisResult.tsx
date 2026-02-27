@@ -53,6 +53,12 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, repo }) => {
           }`}>
             Health: {data.healthScore || 'N/A'}
           </span>
+          <span className="px-2 py-0.5 rounded-full bg-accent-muted/10 text-accent-fg border border-accent-muted/20 text-xs font-medium">
+            ⏱️ {data.setupTime || 'Unknown Setup Time'}
+          </span>
+          <span className="px-2 py-0.5 rounded-full bg-done-fg/10 text-done-fg border border-done-fg/20 text-xs font-medium">
+            ✨ {data.projectVibe || 'Vibe: Unknown'}
+          </span>
         </div>
       </div>
 

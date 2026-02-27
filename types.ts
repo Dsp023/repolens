@@ -23,6 +23,8 @@ export interface RepoAnalysis {
   setupScript: string; // One-click bash/powershell setup script
   healthScore: string; // A-F grade
   refactorSuggestions: string[]; // 3 actionable refactor suggestions
+  setupTime: string; // Estimated time to setup
+  projectVibe: string; // A fun description of the project's vibe
 }
 
 // Application state types

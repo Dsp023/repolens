@@ -49,8 +49,16 @@ const analysisSchema: Schema = {
       items: { type: Type.STRING },
       description: "3 actionable refactoring suggestions to improve code health or architecture.",
     },
+    setupTime: {
+      type: Type.STRING,
+      description: "Estimated time to set up the project locally (e.g., '< 5 mins', '10-20 mins').",
+    },
+    projectVibe: {
+      type: Type.STRING,
+      description: "A fun, short 2-3 word description of the project's 'vibe' (e.g., 'Enterprise Monolith', 'Vibe Coding', 'Weekend Hackathon').",
+    },
   },
-  required: ["summary", "techStack", "structure", "runInstructions", "targetAudience", "pros", "cons", "setupScript", "healthScore", "refactorSuggestions"],
+  required: ["summary", "techStack", "structure", "runInstructions", "targetAudience", "pros", "cons", "setupScript", "healthScore", "refactorSuggestions", "setupTime", "projectVibe"],
 };
 
 export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysis> => {
@@ -86,6 +94,8 @@ export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysi
     8. A one-click setup script (bash) to clone, install, and run.
     9. A Health Score (A to F) analyzing complexity and debt.
     10. 3 actionable refactor suggestions.
+    11. Estimated time to set it up locally (setupTime).
+    12. A fun 2-3 word "vibe" of the project (projectVibe).
 
     If information is completely missing, explicitly say "Not specified in the repository".
     Keep the tone calm, encouraging, and professional.
