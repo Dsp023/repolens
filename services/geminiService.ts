@@ -57,8 +57,13 @@ const analysisSchema: Schema = {
       type: Type.STRING,
       description: "A fun, short 2-3 word description of the project's 'vibe' (e.g., 'Enterprise Monolith', 'Vibe Coding', 'Weekend Hackathon').",
     },
+    keyFeatures: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "Top 3-5 core features or capabilities of this project.",
+    },
   },
-  required: ["summary", "techStack", "structure", "runInstructions", "targetAudience", "pros", "cons", "setupScript", "healthScore", "refactorSuggestions", "setupTime", "projectVibe"],
+  required: ["summary", "techStack", "structure", "runInstructions", "targetAudience", "pros", "cons", "setupScript", "healthScore", "refactorSuggestions", "setupTime", "projectVibe", "keyFeatures"],
 };
 
 export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysis> => {
@@ -96,6 +101,7 @@ export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysi
     10. 3 actionable refactor suggestions.
     11. Estimated time to set it up locally (setupTime).
     12. A fun 2-3 word "vibe" of the project (projectVibe).
+    13. Top 3-5 key features (keyFeatures).
 
     If information is completely missing, explicitly say "Not specified in the repository".
     Keep the tone calm, encouraging, and professional.

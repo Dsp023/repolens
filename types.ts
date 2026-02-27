@@ -25,6 +25,7 @@ export interface RepoAnalysis {
   refactorSuggestions: string[]; // 3 actionable refactor suggestions
   setupTime: string; // Estimated time to setup
   projectVibe: string; // A fun description of the project's vibe
+  keyFeatures: string[]; // Top 3-5 key features
 }
 
 // Application state types

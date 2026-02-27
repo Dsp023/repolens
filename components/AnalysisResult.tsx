@@ -145,6 +145,21 @@ ${data.structure}
             </div>
           </div>
 
+          {/* Card: Key Features */}
+          {data.keyFeatures && data.keyFeatures.length > 0 && (
+            <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">
+              <div className="bg-canvas-subtle px-4 py-3 border-b border-border-default flex items-center gap-2">
+                <StarIcon className="w-4 h-4 text-fg-muted" />
+                <h3 className="text-sm font-semibold text-fg-default">Key Features</h3>
+              </div>
+              <ul className="p-6 space-y-3 list-disc list-inside text-sm text-fg-default">
+                {data.keyFeatures.map((feature, i) => (
+                  <li key={i}>{feature}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {/* Card 6: Pros & Cons */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">
