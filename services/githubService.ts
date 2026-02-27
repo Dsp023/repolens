@@ -35,7 +35,7 @@ export const parseGitHubUrl = (input: string): { owner: string; repo: string } |
 /**
  * Fetches repository metadata and README from GitHub.
  */
-export const fetchRepoData = async (owner: string, repo: string):  Promise<GitHubRepoData> => {
+export const fetchRepoData = async (owner: string, repo: string):  Promise<GitHubRepoData & { tree?: any[] }> => {
   const metaUrl = `${GITHUB_API_BASE}/${owner}/${repo}`;
   const readmeUrl = `${GITHUB_API_BASE}/${owner}/${repo}/readme`;
 
@@ -66,6 +66,18 @@ export const fetchRepoData = async (owner: string, repo: string):  Promise<GitHu
     readmeContent = 'No README.md found in this repository.';
   }
 
+  const defaultBranch = metaData.default_branch;
+  let tree: any[] = [];
+  try {
+    const treeRes = await fetch(`${GITHUB_API_BASE}/${owner}/${repo}/git/trees/${defaultBranch}?recursive=1`);
+    if (treeRes.ok) {
+      const treeData = await treeRes.json();
+      tree = treeData.tree || [];
+    }
+  } catch (e) {
+    console.error("Failed to fetch tree", e);
+  }
+
   return {
     owner: metaData.owner.login,
     repo: metaData.name,
@@ -74,5 +86,7 @@ export const fetchRepoData = async (owner: string, repo: string):  Promise<GitHu
     stars: metaData.stargazers_count,
     url: metaData.html_url,
     readme: readmeContent,
+    defaultBranch: defaultBranch,
+    tree: tree
   };
 };

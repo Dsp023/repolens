@@ -1,5 +1,6 @@
 import React from 'react';
 import { GitHubRepoData, RepoAnalysis } from '../types';
+import InteractiveFileTree from './InteractiveFileTree';
 import {
   BookIcon,
   CodeIcon,
@@ -102,12 +103,21 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, repo }) => {
           <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">
             <div className="bg-canvas-subtle px-4 py-3 border-b border-border-default flex items-center gap-2">
               <FolderIcon className="w-4 h-4 text-fg-muted" />
-              <h3 className="text-sm font-semibold text-fg-default">File Structure</h3>
+              <h3 className="text-sm font-semibold text-fg-default">Interactive File Structure</h3>
             </div>
-            <div className="p-4">
-              <pre className="font-mono text-xs md:text-sm text-fg-default bg-canvas-default leading-relaxed whitespace-pre-wrap text-wrap">
-                {data.structure}
-              </pre>
+            <div className="p-4 bg-canvas-default">
+              {repo.tree && repo.tree.length > 0 ? (
+                <InteractiveFileTree 
+                  repo={repo} 
+                  onFileSelect={(path) => {
+                    alert(`Selected file: ${path}\n\n(In a full implementation, this would trigger Gemini to explain this specific file.)`);
+                  }} 
+                />
+              ) : (
+                <pre className="font-mono text-xs md:text-sm text-fg-default leading-relaxed whitespace-pre-wrap text-wrap">
+                  {data.structure}
+                </pre>
+              )}
             </div>
           </div>
 

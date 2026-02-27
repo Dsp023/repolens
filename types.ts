@@ -7,6 +7,8 @@ export interface GitHubRepoData {
   language: string | null;
   stars: number;
   url: string;
+  defaultBranch: string;
+  tree?: any[];
 }
 
 
