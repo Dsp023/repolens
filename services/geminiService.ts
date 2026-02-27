@@ -36,8 +36,21 @@ const analysisSchema: Schema = {
       items: { type: Type.STRING },
       description: "A list of weaknesses, missing features, or areas for improvement.",
     },
+    setupScript: {
+      type: Type.STRING,
+      description: "A ready-to-use bash/powershell script that clones the repo, installs dependencies, and runs the dev server. Only provide the raw code, without markdown ticks if possible, but keep it clean.",
+    },
+    healthScore: {
+      type: Type.STRING,
+      description: "A grade from A to F based on structure, documentation, and technical debt.",
+    },
+    refactorSuggestions: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "3 actionable refactoring suggestions to improve code health or architecture.",
+    },
   },
-  required: ["summary", "techStack", "structure", "runInstructions", "targetAudience", "pros", "cons"],
+  required: ["summary", "techStack", "structure", "runInstructions", "targetAudience", "pros", "cons", "setupScript", "healthScore", "refactorSuggestions"],
 };
 
 export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysis> => {
@@ -70,6 +83,9 @@ export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysi
     5. Who should use or study this?
     6. Three strengths (pros) of the project.
     7. Three weaknesses or areas for improvement (cons).
+    8. A one-click setup script (bash) to clone, install, and run.
+    9. A Health Score (A to F) analyzing complexity and debt.
+    10. 3 actionable refactor suggestions.
 
     If information is completely missing, explicitly say "Not specified in the repository".
     Keep the tone calm, encouraging, and professional.

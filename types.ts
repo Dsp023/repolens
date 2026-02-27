@@ -18,6 +18,9 @@ export interface RepoAnalysis {
   targetAudience: string; // Who should use or study this?
   pros: string[]; // Strengths of the project
   cons: string[]; // Weaknesses or areas for improvement
+  setupScript: string; // One-click bash/powershell setup script
+  healthScore: string; // A-F grade
+  refactorSuggestions: string[]; // 3 actionable refactor suggestions
 }
 
 // Application state types

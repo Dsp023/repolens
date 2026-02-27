@@ -45,6 +45,13 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, repo }) => {
             {repo.stars.toLocaleString()} stars
           </span>
           <span className="text-xs">Updated recently</span>
+          <span className={`px-2 py-0.5 rounded-full text-xs font-bold border ${
+            ['A', 'B'].some(grade => data.healthScore?.includes(grade)) ? 'bg-success-fg/10 text-success-fg border-success-fg/20' :
+            ['C', 'D'].some(grade => data.healthScore?.includes(grade)) ? 'bg-attention-fg/10 text-attention-fg border-attention-fg/20' :
+            'bg-danger-fg/10 text-danger-fg border-danger-fg/20'
+          }`}>
+            Health: {data.healthScore || 'N/A'}
+          </span>
         </div>
       </div>
 
@@ -118,6 +125,23 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, repo }) => {
               </div>
             </div>
           </div>
+
+          {/* Card: Setup Script */}
+          {data.setupScript && (
+            <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">
+              <div className="bg-canvas-subtle px-4 py-3 border-b border-border-default flex items-center gap-2">
+                <TerminalIcon className="w-4 h-4 text-fg-muted" />
+                <h3 className="text-sm font-semibold text-fg-default">One-Click Setup Script</h3>
+              </div>
+              <div className="p-6">
+                <div className="prose prose-sm max-w-none text-fg-default">
+                  <div className="whitespace-pre-wrap font-mono text-sm bg-canvas-subtle p-4 rounded-md border border-border-default overflow-x-auto text-accent-fg">
+                    {data.setupScript}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Sidebar Column */}
@@ -156,6 +180,21 @@ const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, repo }) => {
               </div>
             </div>
           </div>
+
+          {/* Card: Refactor Suggestions */}
+          {data.refactorSuggestions && data.refactorSuggestions.length > 0 && (
+            <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">
+              <div className="px-4 py-3 border-b border-border-default flex items-center gap-2">
+                <CodeIcon className="w-4 h-4 text-fg-muted" />
+                <h3 className="text-xs font-semibold text-fg-muted uppercase tracking-wider">Refactoring Ideas</h3>
+              </div>
+              <ul className="p-4 space-y-3 list-disc list-inside text-sm text-fg-default">
+                {data.refactorSuggestions.map((suggestion, i) => (
+                  <li key={i}>{suggestion}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
         </div>
 
