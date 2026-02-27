@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GitHubRepoData, RepoAnalysis } from '../types';
 import InteractiveFileTree from './InteractiveFileTree';
 import {
@@ -9,7 +9,8 @@ import {
   UsersIcon,
   GitHubIcon,
   StarIcon,
-  DownloadIcon
+  DownloadIcon,
+  CopyIcon
 } from './Icons';
 
 interface AnalysisResultProps {
@@ -18,6 +19,16 @@ interface AnalysisResultProps {
 }
 
 const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, repo }) => {
+  const [copiedScript, setCopiedScript] = useState(false);
+
+  const handleCopyScript = () => {
+    if (data.setupScript) {
+      navigator.clipboard.writeText(data.setupScript);
+      setCopiedScript(true);
+      setTimeout(() => setCopiedScript(false), 2000);
+    }
+  };
+
   const exportToMarkdown = () => {
     const mdContent = `# Analysis: ${repo.owner}/${repo.repo}
 
@@ -200,9 +211,25 @@ ${data.structure}
           {/* Card: Setup Script */}
           {data.setupScript && (
             <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">
-              <div className="bg-canvas-subtle px-4 py-3 border-b border-border-default flex items-center gap-2">
-                <TerminalIcon className="w-4 h-4 text-fg-muted" />
-                <h3 className="text-sm font-semibold text-fg-default">One-Click Setup Script</h3>
+              <div className="bg-canvas-subtle px-4 py-3 border-b border-border-default flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <TerminalIcon className="w-4 h-4 text-fg-muted" />
+                  <h3 className="text-sm font-semibold text-fg-default">One-Click Setup Script</h3>
+                </div>
+                <button
+                  onClick={handleCopyScript}
+                  className="flex items-center gap-1.5 text-xs font-medium text-fg-muted hover:text-accent-fg transition-colors focus:outline-none"
+                  title="Copy to clipboard"
+                >
+                  {copiedScript ? (
+                    <span className="text-success-fg">Copied!</span>
+                  ) : (
+                    <>
+                      <CopyIcon className="w-3.5 h-3.5" />
+                      <span>Copy</span>
+                    </>
+                  )}
+                </button>
               </div>
               <div className="p-6">
                 <div className="prose prose-sm max-w-none text-fg-default">
