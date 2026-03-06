@@ -8,6 +8,7 @@ export interface GitHubRepoData {
   stars: number;
   url: string;
   defaultBranch: string;
+  updatedAt: string;
   tree?: any[];
 }
 
@@ -16,6 +17,7 @@ export interface RepoAnalysis {
   summary: string; // What does this project do?
   techStack: string[]; // Tech stack used
   structure: string; // Folder structure explained
+  architectureDiagram: string; // Mermaid JS diagram
   runInstructions: string; // How to run this project locally
   targetAudience: string; // Who should use or study this?
   pros: string[]; // Strengths of the project

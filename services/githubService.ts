@@ -87,6 +87,7 @@ export const fetchRepoData = async (owner: string, repo: string):  Promise<GitHu
     url: metaData.html_url,
     readme: readmeContent,
     defaultBranch: defaultBranch,
+    updatedAt: metaData.updated_at,
     tree: tree
   };
 };

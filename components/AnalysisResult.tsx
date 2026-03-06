@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GitHubRepoData, RepoAnalysis } from '../types';
 import InteractiveFileTree from './InteractiveFileTree';
+import MermaidDiagram from './MermaidDiagram';
 import {
   BookIcon,
   CodeIcon,
@@ -104,7 +105,7 @@ ${data.structure}
             <StarIcon className="w-4 h-4" />
             {repo.stars.toLocaleString()} stars
           </span>
-          <span className="text-xs">Updated recently</span>
+          <span className="text-xs">Updated {new Date(repo.updatedAt).toLocaleDateString()}</span>
           <span className={`px-2 py-0.5 rounded-full text-xs font-bold border ${
             ['A', 'B'].some(grade => data.healthScore?.includes(grade)) ? 'bg-success-fg/10 text-success-fg border-success-fg/20' :
             ['C', 'D'].some(grade => data.healthScore?.includes(grade)) ? 'bg-attention-fg/10 text-attention-fg border-attention-fg/20' :
@@ -185,6 +186,19 @@ ${data.structure}
               </ul>
             </div>
           </div>
+
+          {/* Card: Architecture Diagram */}
+          {data.architectureDiagram && (
+            <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">
+              <div className="bg-canvas-subtle px-4 py-3 border-b border-border-default flex items-center gap-2">
+                <CodeIcon className="w-4 h-4 text-fg-muted" />
+                <h3 className="text-sm font-semibold text-fg-default">Architecture & Data Flow</h3>
+              </div>
+              <div className="p-4 bg-canvas-default">
+                <MermaidDiagram chart={data.architectureDiagram} />
+              </div>
+            </div>
+          )}
 
           {/* Card 4: Folder Structure */}
           <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">

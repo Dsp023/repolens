@@ -18,6 +18,10 @@ const analysisSchema: Schema = {
       type: Type.STRING,
       description: "A simple explanation of the folder structure.  Use a plain text list with dashes (e.g. '- src/: main code'). Do NOT use HTML tags like <ul> or <li>.",
     },
+    architectureDiagram: {
+      type: Type.STRING,
+      description: "A valid Mermaid.js graph string (e.g., 'graph TD; A-->B;') that illustrates the high-level architecture or data flow of the project. Do not use markdown backticks around it.",
+    },
     runInstructions: {
       type: Type.STRING,
       description: " Simplified steps to run the project locally. Use Markdown for code blocks.",
@@ -63,7 +67,7 @@ const analysisSchema: Schema = {
       description: "Top 3-5 core features or capabilities of this project.",
     },
   },
-  required: ["summary", "techStack", "structure", "runInstructions", "targetAudience", "pros", "cons", "setupScript", "healthScore", "refactorSuggestions", "setupTime", "projectVibe", "keyFeatures"],
+  required: ["summary", "techStack", "structure", "architectureDiagram", "runInstructions", "targetAudience", "pros", "cons", "setupScript", "healthScore", "refactorSuggestions", "setupTime", "projectVibe", "keyFeatures"],
 };
 
 export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysis> => {
@@ -92,16 +96,17 @@ export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysi
     1. What does this project do?
     2. The Tech Stack used.
     3. Explanation of the folder structure (Strictly use a plain text list with dashes. NO HTML TAGS allowed).
-    4. How to run it locally (simplify the steps).
-    5. Who should use or study this?
-    6. Three strengths (pros) of the project.
-    7. Three weaknesses or areas for improvement (cons).
-    8. A one-click setup script (bash) to clone, install, and run.
-    9. A Health Score (A to F) analyzing complexity and debt.
-    10. 3 actionable refactor suggestions.
-    11. Estimated time to set it up locally (setupTime).
-    12. A fun 2-3 word "vibe" of the project (projectVibe).
-    13. Top 3-5 key features (keyFeatures).
+    4. A Mermaid.js diagram representing the architecture or data flow.
+    5. How to run it locally (simplify the steps).
+    6. Who should use or study this?
+    7. Three strengths (pros) of the project.
+    8. Three weaknesses or areas for improvement (cons).
+    9. A one-click setup script (bash) to clone, install, and run.
+    10. A Health Score (A to F) analyzing complexity and debt.
+    11. 3 actionable refactor suggestions.
+    12. Estimated time to set it up locally (setupTime).
+    13. A fun 2-3 word "vibe" of the project (projectVibe).
+    14. Top 3-5 key features (keyFeatures).
 
     If information is completely missing, explicitly say "Not specified in the repository".
     Keep the tone calm, encouraging, and professional.
