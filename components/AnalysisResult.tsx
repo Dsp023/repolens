@@ -210,6 +210,7 @@ ${data.structure}
               {repo.tree && repo.tree.length > 0 ? (
                 <InteractiveFileTree 
                   repo={repo} 
+                  complexFiles={data.complexFiles}
                   onFileSelect={(path) => {
                     alert(`Selected file: ${path}\n\n(In a full implementation, this would trigger Gemini to explain this specific file.)`);
                   }} 

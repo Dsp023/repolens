@@ -28,6 +28,7 @@ export interface RepoAnalysis {
   setupTime: string; // Estimated time to setup
   projectVibe: string; // A fun description of the project's vibe
   keyFeatures: string[]; // Top 3-5 key features
+  complexFiles?: string[]; // Most complex/core files for heatmap
   learningPath: { // A step-by-step walkthrough
     steps: {
       title: string;

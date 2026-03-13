@@ -66,6 +66,12 @@ const analysisSchema: Schema = {
       items: { type: Type.STRING },
       description: "Top 3-5 core features or capabilities of this project.",
     },
+    complexFiles: {
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description: "A list of the 3-5 most complex or 'core' files in the project for a complexity heatmap. Use full paths from the repository root.",
+      nullable: true,
+    },
     learningPath: {
       type: Type.OBJECT,
       properties: {
@@ -125,7 +131,8 @@ export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysi
     12. Estimated time to set it up locally (setupTime).
     13. A fun 2-3 word "vibe" of the project (projectVibe).
     14. Top 3-5 key features (keyFeatures).
-    15. A learning path (learningPath) for beginners to understand the code base step-by-step.
+    15. Top 3-5 most complex or 'core' files (complexFiles).
+    16. A learning path (learningPath) for beginners to understand the code base step-by-step.
 
     If information is completely missing, explicitly say "Not specified in the repository".
     Keep the tone calm, encouraging, and professional.
