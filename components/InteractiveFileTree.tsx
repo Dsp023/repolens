@@ -5,9 +5,10 @@ import { FolderIcon, CodeIcon } from './Icons';
 interface InteractiveFileTreeProps {
   repo: GitHubRepoData;
   onFileSelect: (path: string) => void;
+  complexFiles?: string[];
 }
 
-const InteractiveFileTree: React.FC<InteractiveFileTreeProps> = ({ repo, onFileSelect }) => {
+const InteractiveFileTree: React.FC<InteractiveFileTreeProps> = ({ repo, onFileSelect, complexFiles = [] }) => {
   const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
 
   if (!repo.tree || repo.tree.length === 0) {
@@ -64,16 +65,24 @@ const InteractiveFileTree: React.FC<InteractiveFileTreeProps> = ({ repo, onFileS
             </div>
           );
         })}
-        {node.files.sort((a: any, b: any) => a.name.localeCompare(b.name)).map((file: any) => (
-          <div 
-            key={file.path}
-            className="flex items-center gap-2 py-1 px-2 ml-4 hover:bg-canvas-subtle rounded-md cursor-pointer text-sm text-fg-muted hover:text-accent-fg transition-colors group"
-            onClick={() => onFileSelect(file.path)}
-          >
-            <CodeIcon className="w-4 h-4 opacity-70 group-hover:opacity-100" />
-            <span className="truncate">{file.name}</span>
-          </div>
-        ))}
+        {node.files.sort((a: any, b: any) => a.name.localeCompare(b.name)).map((file: any) => {
+          const isComplex = complexFiles.some(cf => cf === file.path || file.path.endsWith('/' + cf) || cf.endsWith('/' + file.path));
+          return (
+            <div 
+              key={file.path}
+              className={`flex items-center gap-2 py-1 px-2 ml-4 hover:bg-canvas-subtle rounded-md cursor-pointer text-sm transition-colors group ${isComplex ? 'bg-attention-muted/10 border-l-2 border-attention-fg' : 'text-fg-muted hover:text-accent-fg'}`}
+              onClick={() => onFileSelect(file.path)}
+            >
+              <CodeIcon className={`w-4 h-4 ${isComplex ? 'text-attention-fg' : 'opacity-70 group-hover:opacity-100'}`} />
+              <span className={`truncate ${isComplex ? 'font-semibold text-fg-default' : ''}`}>{file.name}</span>
+              {isComplex && (
+                <span className="ml-auto text-[8px] uppercase font-bold text-attention-fg bg-attention-muted/30 px-1 rounded border border-attention-fg/20">
+                  Core
+                </span>
+              )}
+            </div>
+          );
+        })}
       </div>
     );
   };
