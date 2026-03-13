@@ -142,14 +142,14 @@ ${data.structure}
           <span className="px-2 py-0.5 rounded-full bg-done-fg/10 text-done-fg border border-done-fg/20 text-xs font-medium">
             ✨ {data.projectVibe || 'Vibe: Unknown'}
           </span>
+          <button
+            onClick={exportToMarkdown}
+            className="px-2 py-0.5 rounded-full bg-canvas-subtle border border-border-default text-xs font-medium text-fg-default hover:bg-canvas-default transition-colors flex items-center gap-1.5"
+          >
+            <DownloadIcon className="w-3 h-3" />
+            <span>Export MD</span>
+          </button>
         </div>
-        <button
-          onClick={exportToMarkdown}
-          className="flex items-center gap-2 px-3 py-1.5 bg-canvas-subtle border border-border-default rounded-md text-sm font-medium text-fg-default hover:bg-canvas-default transition-colors"
-        >
-          <DownloadIcon className="w-4 h-4" />
-          Export MD
-        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
