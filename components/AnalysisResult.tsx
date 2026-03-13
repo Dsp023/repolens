@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { GitHubRepoData, RepoAnalysis } from '../types';
 import InteractiveFileTree from './InteractiveFileTree';
 import MermaidDiagram from './MermaidDiagram';
+import { fetchFileContent } from '../services/githubService';
+import { explainFile } from '../services/geminiService';
 import {
   BookIcon,
   CodeIcon,
@@ -11,7 +13,9 @@ import {
   GitHubIcon,
   StarIcon,
   DownloadIcon,
-  CopyIcon
+  CopyIcon,
+  AlertIcon,
+  XIcon
 } from './Icons';
 
 interface AnalysisResultProps {
@@ -21,6 +25,25 @@ interface AnalysisResultProps {
 
 const AnalysisResult: React.FC<AnalysisResultProps> = ({ data, repo }) => {
   const [copiedScript, setCopiedScript] = useState(false);
+  const [diving, setDiving] = useState(false);
+  const [diveResult, setDiveResult] = useState<{ path: string; explanation: string } | null>(null);
+  const [diveError, setDiveError] = useState<string | null>(null);
+
+  const handleFileDive = async (path: string) => {
+    setDiving(true);
+    setDiveError(null);
+    setDiveResult(null);
+    try {
+      const content = await fetchFileContent(repo.owner, repo.repo, path, repo.defaultBranch);
+      const explanation = await explainFile(repo, path, content);
+      setDiveResult({ path, explanation });
+    } catch (err: any) {
+      console.error(err);
+      setDiveError(err.message || "Failed to analyze file.");
+    } finally {
+      setDiving(false);
+    }
+  };
 
   const handleCopyScript = () => {
     if (data.setupScript) {
@@ -212,7 +235,7 @@ ${data.structure}
                   repo={repo} 
                   complexFiles={data.complexFiles}
                   onFileSelect={(path) => {
-                    alert(`Selected file: ${path}\n\n(In a full implementation, this would trigger Gemini to explain this specific file.)`);
+                    handleFileDive(path);
                   }} 
                 />
               ) : (
@@ -274,6 +297,53 @@ ${data.structure}
 
         {/* Sidebar Column */}
         <div className="space-y-6">
+
+          {/* Card: File Dive Result (Floating/Conditional Sidebar Card) */}
+          {(diving || diveResult || diveError) && (
+            <div className="border border-accent-muted/30 rounded-md bg-canvas-default overflow-hidden shadow-lg animate-fade-in ring-1 ring-accent-muted/20">
+              <div className="bg-accent-muted/10 px-4 py-3 border-b border-accent-muted/30 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CodeIcon className="w-4 h-4 text-accent-fg" />
+                  <h3 className="text-xs font-semibold text-accent-fg uppercase tracking-wider">File Analysis</h3>
+                </div>
+                <button 
+                  onClick={() => { setDiveResult(null); setDiveError(null); }}
+                  className="text-fg-muted hover:text-fg-default transition-colors"
+                >
+                  <XIcon className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="p-4">
+                {diving ? (
+                  <div className="flex flex-col items-center py-8">
+                    <div className="w-6 h-6 border-2 border-accent-fg border-t-transparent rounded-full animate-spin"></div>
+                    <p className="text-xs text-fg-muted mt-3">Analyzing file...</p>
+                  </div>
+                ) : diveError ? (
+                  <div className="flex items-start gap-2 text-danger-fg bg-danger-muted/10 p-3 rounded-md border border-danger-muted/20">
+                    <AlertIcon className="w-4 h-4 shrink-0 mt-0.5" />
+                    <p className="text-xs font-medium">{diveError}</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <h4 className="text-sm font-bold text-fg-default truncate border-b border-border-muted pb-2 mb-2">
+                      {diveResult?.path.split('/').pop()}
+                    </h4>
+                    <div className="prose prose-xs max-w-none text-fg-default text-xs leading-relaxed overflow-y-auto max-h-[400px] custom-scrollbar">
+                      {diveResult?.explanation.split('\n').map((line, i) => (
+                        <p key={i} className={line.startsWith('#') ? 'font-bold text-sm mt-3 mb-1' : 'mb-2'}>
+                          {line}
+                        </p>
+                      ))}
+                    </div>
+                    <p className="text-[10px] text-fg-muted pt-2 border-t border-border-muted italic">
+                      Path: {diveResult?.path}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Card 3: Target Audience */}
           <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">

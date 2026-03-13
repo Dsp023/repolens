@@ -88,6 +88,26 @@ export const fetchRepoData = async (owner: string, repo: string):  Promise<GitHu
     readme: readmeContent,
     defaultBranch: defaultBranch,
     updatedAt: metaData.updated_at,
-    tree: tree
+    tree: tree.sort((a: any, b: any) => {
+      if (a.type === 'tree' && b.type !== 'tree') return -1;
+      if (a.type !== 'tree' && b.type === 'tree') return 1;
+      return a.path.localeCompare(b.path);
+    })
   };
+};
+
+/**
+ * Fetches the raw content of a specific file from GitHub.
+ */
+export const fetchFileContent = async (owner: string, repo: string, path: string, branch: string = 'master'): Promise<string> => {
+  const url = `${GITHUB_API_BASE}/${owner}/${repo}/contents/${path}?ref=${branch}`;
+  const res = await fetch(url, {
+    headers: { 'Accept': 'application/vnd.github.raw+json' }
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch file content: ${res.statusText}`);
+  }
+
+  return await res.text();
 };

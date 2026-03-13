@@ -215,3 +215,57 @@ export const chatWithRepo = async (repoData: GitHubRepoData, chatHistory: ChatMe
   }
 };
 
+/**
+ * Explains a specific file's role in the context of the repository.
+ */
+export const explainFile = async (repoData: GitHubRepoData, filePath: string, fileContent: string): Promise<string> => {
+  if (!process.env.API_KEY) {
+    throw new Error("Missing Gemini API Key.");
+  }
+
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+  const prompt = `
+    You are a technical lead explaining a specific file in a codebase to a new developer.
+    
+    Repository: ${repoData.owner}/${repoData.repo}
+    File Path: ${filePath}
+    
+    File Content:
+    ---
+    ${fileContent.slice(0, 20000)}
+    ---
+    
+    Context from README:
+    ---
+    ${repoData.readme.slice(0, 5000)}
+    ---
+
+    Please explain:
+    1. What is the primary responsibility of this file?
+    2. How does it interact with the rest of the system?
+    3. Any notable patterns or technologies used in this specific file.
+    
+    Keep the explanation concise, professional, and helpful. Use Markdown for formatting.
+  `;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-flash-latest",
+      contents: prompt,
+      config: {
+        systemInstruction: "You are an expert software architect. Explain the provided file clearly and concisely.",
+      },
+    });
+
+    if (!response.text) {
+      throw new Error("Empty response from AI.");
+    }
+
+    return response.text;
+  } catch (error: any) {
+    console.error("Gemini File Explain Error:", error);
+    throw new Error(`Failed to analyze file: ${error.message}`);
+  }
+};
+
