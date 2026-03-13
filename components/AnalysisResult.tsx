@@ -308,6 +308,39 @@ ${data.structure}
             </div>
           </div>
 
+          {/* Card: Learning Path */}
+          {data.learningPath && data.learningPath.steps && (
+            <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">
+              <div className="px-4 py-3 border-b border-border-default flex items-center gap-2">
+                <BookIcon className="w-4 h-4 text-fg-muted" />
+                <h3 className="text-xs font-semibold text-fg-muted uppercase tracking-wider">Learning Path</h3>
+              </div>
+              <div className="p-4 space-y-4">
+                {data.learningPath.steps.map((step, i) => (
+                  <div key={i} className="flex gap-3">
+                    <div className="flex flex-col items-center">
+                      <div className="w-6 h-6 rounded-full bg-accent-muted/20 text-accent-fg border border-accent-muted/30 flex items-center justify-center text-xs font-bold shrink-0">
+                        {i + 1}
+                      </div>
+                      {i < data.learningPath.steps.length - 1 && (
+                        <div className="w-px h-full bg-border-default my-1"></div>
+                      )}
+                    </div>
+                    <div className="pb-2">
+                      <h4 className="text-sm font-semibold text-fg-default">{step.title}</h4>
+                      <p className="text-xs text-fg-muted mt-1 leading-relaxed">{step.description}</p>
+                      {step.file && (
+                        <code className="text-[10px] bg-canvas-subtle border border-border-default px-1.5 py-0.5 rounded mt-1.5 inline-block font-mono text-accent-fg">
+                          {step.file}
+                        </code>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Card: Refactor Suggestions */}
           {data.refactorSuggestions && data.refactorSuggestions.length > 0 && (
             <div className="border border-border-default rounded-md bg-canvas-default overflow-hidden">

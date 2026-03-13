@@ -66,8 +66,26 @@ const analysisSchema: Schema = {
       items: { type: Type.STRING },
       description: "Top 3-5 core features or capabilities of this project.",
     },
+    learningPath: {
+      type: Type.OBJECT,
+      properties: {
+        steps: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              title: { type: Type.STRING },
+              description: { type: Type.STRING },
+              file: { type: Type.STRING, nullable: true },
+            },
+            required: ["title", "description"],
+          },
+        },
+      },
+      required: ["steps"],
+    },
   },
-  required: ["summary", "techStack", "structure", "architectureDiagram", "runInstructions", "targetAudience", "pros", "cons", "setupScript", "healthScore", "refactorSuggestions", "setupTime", "projectVibe", "keyFeatures"],
+  required: ["summary", "techStack", "structure", "architectureDiagram", "runInstructions", "targetAudience", "pros", "cons", "setupScript", "healthScore", "refactorSuggestions", "setupTime", "projectVibe", "keyFeatures", "learningPath"],
 };
 
 export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysis> => {
@@ -107,6 +125,7 @@ export const analyzeRepo = async (repoData: GitHubRepoData): Promise<RepoAnalysi
     12. Estimated time to set it up locally (setupTime).
     13. A fun 2-3 word "vibe" of the project (projectVibe).
     14. Top 3-5 key features (keyFeatures).
+    15. A learning path (learningPath) for beginners to understand the code base step-by-step.
 
     If information is completely missing, explicitly say "Not specified in the repository".
     Keep the tone calm, encouraging, and professional.
